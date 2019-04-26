@@ -1,4 +1,11 @@
 # PL / SQL (Procedual language Sql)
+
+* [1. 데이터타입](#데이터타입)
+
+
+
+
+## 개념
 - 오라클에서 제공하는 프로그래밍 언어
 - 일반 프로그래밍 언어적인 요소를 다 가지고 있고, 데이터베이스 업무를 처리하기 위한 최적화된 언어
 
@@ -62,6 +69,82 @@ END
 - 또한 PL/SQL블록 내에서 RETURN문을 통해서 반드시 값을 반환해야 한다.
 
 - 저장블록(stored PL/SQL Block) : 서버에 저장해 놓고 주기적으로 반복해서 사용할 경우 사용된다.
+
+
+# 데이터타입
+
+## 1. 일반변수 선언문법
+```
+  identifier[CONSTANT] 데이터타입 [NOT NULL]
+```
+- 변수의 이름은 sql의 object명과 동일한 규칙을 따른다.
+- 초기값은 할당연산자 (:=)를 사용하여 정의한다.
+- 초기값을 정의하지 않으면, 변수는 null값을 가지게 된다.
+
+예제
+```swift
+  v_price CONSTANT NUMBER(4,2) := 12.34;
+  v_name VARCHAR2(20);
+  v_Bir_Type CHAR(1);
+  
+  v_flag BOOLEAN NOT NULL := TRUE;
+  v_birthday DATE;
+```
+
+## 2. %TYPE 데이터 형
+- %Type 데이터형은 기술한 데이터베이스 테이블의 컬럼 데이터 타입을 모를 경우 사용할 수 있고, 코딩 이후 데이터베이스 컬럼의 데이터 타입이 변경될 경우 다시 수정할 필요가 없다. 
+- 이미 선언된 다른 변수나 데이터베이스 컬럼의 데이터 타입을 이용하여 선언한다.
+- 데이터베이스 테이블과 컬럼 그리고 이미 선언한 변수명이 %TYPE 앞에 올 수 있다.
+
+### %TYPE 장점
+- DB column definition을 정확히 알지 못하는 경우에 사용할 수있다.
+- DB column definition이 변경 되어도 다시 PL/SQL을 고칠 필요가 없다.
+
+### 예제
+
+```swift
+
+CREATE OR REPLACE PROCEDURE Emp_Info
+  (p_empno IN emp.empno%TYPE)
+   -- in parameter
+
+IS
+
+  -- %type 데이터형 변수 선언
+  v_empno emp.empno%TYPE; emp.empno%TYPE;
+  v_ename emp.ename%TYPE;
+  v_sal emp.sal%TYPE;
+
+BEGIN
+
+  DBMS_OUTPUT.ENABLE;
+  
+  -- %TYPE 데이터형 변수 사용
+  SELECT empno, ename, sal
+  INTO v_empno, v_ename, v_sal
+  FROM emp
+  WHERE empno = p_empno;
+  
+  --결과값 출력
+  
+  DBMS_OUTPUT.PUT_LINE('사원번호 : ' ||v_empno);
+  DBMS_OUTPUT.PUT_LINE('사원이름 : ' ||v_ename);
+  DBMS_OUTPUT.PUT_LINE('사원급여 : ' ||v_sal);
+
+  END;
+ /
+ 
+
+/* 결과값 출력 */
+
+SQL > SET SERVEROUTPUT ON;
+SQL > EXECUTE Emp_Info(7369);
+
+
+```
+
+
+
 
 
 
