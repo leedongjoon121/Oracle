@@ -148,7 +148,50 @@ SQL > EXECUTE Emp_Info(7369);
 ```
 
 # 로우타입데이터형
--
+- 하나 이상의 데이터값을 갖는 데이터 타입으로 배열과 비슷한 역할을 하고 재사용이 가능하다. %ROWTYPE 데이터형과, PL/SQL테이블과 레코드는 복합 데이터 타입에 속함
+
+## %ROWTYPE 
+- 테이블이나 뷰 내부의 컬럼 데이터형, 크기, 속성등을 그대로 사용할 수있다.
+- %ROWTYPE 앞에 오는 것은 데이터베이스 테이블 이름이다.
+- 지정된 테이블의 구조와 동일한 구조를 갖는 변수를 선언할 수 있다.
+- 데이터베이스 컬럼들의 수나 DATATYPE을 알지 못할 때 편리 하다.
+- 테이블의 데이터 컬럼의 DATATYPE이 변경 될 경우 프로그램을 재수정할 필요가 없다.
+
+```swift 
+
+CREATE OR REPLACE PROCEDURE RowType_Test
+(p_empno IN emp.empno%TYPE)
+
+IS
+  -- emp 테이블의 속성을 그대로 사용할 수 있다.
+  v_emp emp%ROWTYPE;
+
+BEGIN
+
+  DBMS_OUTPUT.ENABLE;
+  
+  -- %ROWTYPE 데이터형 변수 사용
+  SELECT empno, ename, hiredate
+  INTO v_emp.v_empno, v_emp.v_ename, v_emp.hiredate
+  FROM emp
+  WHERE empno = p_empno;
+  
+  --결과값 출력
+  
+  DBMS_OUTPUT.PUT_LINE('사원번호 : ' ||v_emp.v_empno);
+  DBMS_OUTPUT.PUT_LINE('사원이름 : ' ||v_emp.v_ename);
+  DBMS_OUTPUT.PUT_LINE('입사일 : ' ||v_emp.hiredate);
+
+  END;
+ /
+ 
+
+/* 결과값 출력 */
+
+SQL > SET SERVEROUTPUT ON;
+SQL > EXECUTE RowType_Test(7369);
+
+```
 
 
 
