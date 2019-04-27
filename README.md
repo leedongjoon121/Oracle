@@ -214,7 +214,64 @@ prdname_tab prdname_table
 
 ```
 
+```swift
+CREATE OR REPLACE PROCEDURE Table_Test
+(v_deptno IN emp.deptno%TYPE)
 
+IS
+
+  -- 각 컬럼에서 사용할 테이블의 선언 
+  TYPE empno_table IS TABLE OF emp.empno%TYPE
+  INDEX BY BINARY_INTEGER;
+  
+  TYPE ename_table IS TABLE OF emp.ename%TYPE
+  INDEX BY BINARY_INTEGER;
+  
+  TYPE sal_table IS TABLE OF emp.sal%TYPE
+  INDEX BY BINARY_INTEGER;
+  
+  -- 테이블타입으로 변수를 선언해서 옴
+  empno_tab empno_table;
+  ename_tab ename_table;
+  sal_tab sal_table;
+  
+  i BINARY_INTEGER := 0;
+  
+BEGIN
+
+ 
+   DBMS_OUTPUT.ENABLE;
+   
+   /* emp_list는 자동선언되는 BINARY_INTEGER형 변수로 1씩 증가한다*/
+   FOR emp_list IN (
+       select empno, ename, sal 
+       from emp
+       where deptno = v_deptno 
+   ) LOOP
+
+   i := i+1;
+   
+   empno_tab(i) := emp_list.empno;
+   ename_tab(i) := emp_list.ename;
+   sal_tab(i) := emp_list.sal;
+   
+   END LOOP;
+   
+   FOR cnt IN 1..i LOOP
+      DBMS_OUTPUT.PUT_LINE('사원번호 : '|| empno_tab(cnt));
+      DBMS_OUTPUT.PUT_LINE('사원이름 : '|| ename_tab(cnt));
+      DBMS_OUTPUT.PUT_LINE('사원급여 : '|| sal_tab(cnt));   
+   END LOOP;
+END  
+;
+/
+
+/* 실행  */ 
+SET SERVEROUTPUT ON;
+
+EXECUTE TABLE_TEST(7369);
+
+```
 
 
 
