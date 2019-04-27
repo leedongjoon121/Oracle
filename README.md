@@ -5,6 +5,7 @@
 # 목차
 * [1. %TYPE 데이터형 ](#타입데이터형)
 * [2. %ROWTYPE 데이터형 ](#로우타입데이터형)
+* [3. 테이블 타입 ](#로우타입데이터형)
 
 
 
@@ -192,6 +193,29 @@ SQL > SET SERVEROUTPUT ON;
 SQL > EXECUTE RowType_Test(7369);
 
 ```
+
+# 테이블타입
+- PL/SQL에서의 테이블은 일종의 일차원 배열개념이다. 테이블은 크기에 제한이 없으며, 그 ROW의 수는 데이터가 들어옴에 따라 자동증가한다.
+- BINARY_INTEGER 타입의 인덱스 번호로 순서가 정해진다. 하나의 테이블에 한 개의 컬럼 데이터를 저장한다.
+
+## 형식
+```swift
+TYPE table_name IS TABLE OF datatype
+INDEX BY BINARY_INTEGER
+
+```
+
+``` swift
+TYPE prdname_table IS TABLE OF VARCHAR2(30)
+INDEX BY BINARY_INTEGER;
+
+-- prdname_table 테이블타입으로 prdname_tab 변수를 선언하여 사용
+prdname_tab prdname_table
+
+```
+
+
+
 
 
 
