@@ -5,6 +5,7 @@
 # 목차
 * [1. INSERT ](#INSERT)
 * [2. UPDATE ](#UPDATE)
+* [3. DELETE ](#DELETE)
 
 
 
@@ -87,3 +88,51 @@ END;
 SQL > EXECUTE Update_Test(7900, -10);
 
 ```
+
+
+
+# DELETE
+
+```swift
+
+CREATE OR REPLACE PROCEDURE Delete_Test
+( p_empno IN emp.empno%TYPE)
+
+IS
+
+ -- 삭제된 데이터 확인하기 위해 
+   v_emp emp%ROWTYPE;
+
+
+BEGIN
+
+   DBMS_OUTPUT.ENABLE;
+   
+   SELECT empno, ename, hiredate
+   INTO v_emp.empno, v_emp.ename, v_emp.hiredate
+   FROM emp 
+   WHERE empno = p_empno;
+   
+   DBMS_OUTPUT.PUT_LINE('사원번호 : ' || v_emp.empno);
+   DBMS_OUTPUT.PUT_LINE('사원이름 : ' || v_emp.ename);
+   DBMS_OUTPUT.PUT_LINE('입사일 : ' || v_emp.hiredate);
+   
+   
+   -- 삭제 쿼리 
+   DELETE
+   FROM emp
+   WHERE empno = p_empno;
+   
+   COMMIT;
+   
+   DBMS_OUTPUT.PUT_LINE('삭제 성공');
+   
+   
+END;
+/
+
+
+
+```
+
+
