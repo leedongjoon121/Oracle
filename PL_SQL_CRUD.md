@@ -48,7 +48,7 @@ END;
 
 CREATE OR REPLACE PROCEDURE Update_Test
 (
-   v_empno IN emp.empno%TYPE   -- 급여 수정 사번
+   v_empno IN emp.empno%TYPE,   -- 급여 수정 사번
    v_rate IN NUMBER  -- 급여 인상/인하율
 )
 
@@ -68,7 +68,7 @@ BEGIN
   
   COMMIT;
   
-  DBMS_OUTPUT.PUTLINE('데이터 수정 성공');
+  DBMS_OUTPUT.PUT_LINE('데이터 수정 성공');
   
   SELECT empno, ename, sal
   INTO v_emp.empno, v_emp.ename, v_emp.sal
