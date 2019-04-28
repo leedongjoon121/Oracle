@@ -7,6 +7,7 @@
 * [2. %ROWTYPE 데이터형 ](#로우타입데이터형)
 * [3. 테이블 타입 ](#테이블타입)
 * [4. PL/SQL 레코드](#레코드)
+* [5. Table Of Record](#테이블레코드)
 
 
 
@@ -336,4 +337,67 @@ END;
 
 ```
 
+
+
+# 테이블레코드
+- PL/SQL TABLE 변수 선언과 비슷하며 데이터타입을 %ROWTYPE으로 선언하면 된다.
+- PL/SQL TABLE과 RECORD의 복합 기능을 한다.
+
+
+## PL/SQL Table Of Record 문법
+
+
+```swift
+
+TYPE dept_table_type IS TABLE OF dept%ROWTYPE
+INDEX BY BINARY_INTEGER;
+
+-- dept_table의 각 요소는 레코드이다.
+dept_table dept_table_type;
+
+
+```
+
+
+## 예제
+
+```swift
+
+CREATE OR REPLACE PROCEDURE Table_test
+IS
+  i BINARY_INTEGER := 0;
+  
+  -- PL/SQL Table of Reocrod의 선언
+  TYPE dept_table_type IS TABLE OF dept%ROWTYPE
+  INDEX BY BINARY_INTEGER;
+  
+  
+  dept_table  dept_table_type;
+
+BEGIN
+  
+   DBMS_OUTPUT.ENABLE;
+   FOR dept_list IN(SELECT * FROM dept) LOOP
+   i := i+1;
+   
+   dept_table(i).deptno := dept_list.deptno;
+   dept_table(i).dname := dept_list.dname;
+   dept_table(i).loc := dept_list.loc;
+   
+   END LOOP;
+
+
+   FOR cnt IN 1..i LOOP
+   
+   DBMS_OUTPUT.PUT_LINE(
+        '부서번호 : ' || dept_table(cnt).deptno 
+     ||'  부서명 : ' || dept_table(cnt).dname  
+     ||'  위치 : ' || dept_table(cnt).loc
+   );
+   END LOOP;
+END;
+/
+
+
+```
 
