@@ -284,6 +284,56 @@ PL/SQL 레코드는 여러개의 데이터 타입을 갖는 변수들의 집합
 PL/SQL 테이블과 다르게 개별 필드의 이름을 부여할 수 있고, 선언시 초기화가 가능하다.
 
 
+## 형식
+```swift
+TYPE record_test IS RECORD(
+   record_empno NUMBER,
+   record_ename VARCHAR2(30),
+   record_sal NUMBER
+);
 
+
+-- record_test 레코드 타입으로 prd_record변수를 선언해서 사용
+prd_record record_test;
+
+```
+
+
+## 예제
+
+```swift
+
+CREATE OR REPLACE PROCEDURE Record_Test
+(p_empno IN emp.empno%TYPE)
+IS
+
+/* 하나의 레코드의 세가지 변수 타입 선언 */
+  TYPE emp_record IS RECORD
+  (v_empno NUMBER,
+   v_ename VARCHAR(30),
+   v_hiredate DATE
+  );
+  
+  emp_rec emp_record;
+  
+BEGIN
+
+  DBMS_OUTPUT.ENABLE;
+  
+  -- 레코드 사용
+  SELECT empno, ename, hiredate
+  INTO emp_rec.v_empno, emp_rec.v_ename, emp_rec.v_hiredate
+  FROM emp
+  WHERE empno = p_empno;
+  
+  DBMS_OUTPUT.PUT_LINE('사원번호 : ' || emp_rec.v_empno);
+  DBMS_OUTPUT.PUT_LINE('사원이름 : ' || emp_rec.v_ename);
+  DBMS_OUTPUT.PUT_LINE('사원번호 : ' || emp_rec.v_hiredate);
+
+END;
+/
+
+
+```
 
 
